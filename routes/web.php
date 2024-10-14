@@ -20,23 +20,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/check-aws-credentials', function () {
-    try {
-        // Fetch credentials using the default provider chain
-        $provider = CredentialProvider::defaultProvider();
-        $credentials = $provider()->wait();
-
-        // Display the credentials
-        return response()->json([
-            'AccessKeyId' => $credentials->getAccessKeyId(),
-            'SecretAccessKey' => $credentials->getSecretKey(),
-            // Check if session token is available
-            'SessionToken' => method_exists($credentials, 'getSessionToken') ? $credentials->getSessionToken() : 'No session token',
-        ]);
-    } catch (\Exception $e) {
-        return response()->json(['error' => 'Failed to retrieve AWS credentials: ' . $e->getMessage()], 500);
-    }
-});
 
 Route::get('/invoke-aws-api', function () {
     // AWS API Gateway details
